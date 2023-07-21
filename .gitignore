@@ -1,3 +1,13 @@
 # Text files "Notes and test Samples"
 *.txt
+# all .tmp Files 
+*.tmp
+# lab files for testing code 
 lab.bat
+lab2.bat
+lab3.bat
+# WordLists Or CSV files
+*.csv
+# raw code files 
+Lion.bat
+str2hex_raw.bat
