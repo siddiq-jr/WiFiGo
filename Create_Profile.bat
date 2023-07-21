@@ -4,7 +4,8 @@ set SNN=SIDDIQ JR
 set Net_pass=12345678
 set hex =534944444951204A52
 set SNN2="%SNN%"
-
+rem This Is thr Profile Template that can Be Added To User Profiles in order
+rem to connect to wifi using CMD
 :Create_profile
 echo ^<?xml version="1.0"?^>> WiFi-%SNN2%.xml
 echo ^<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1"^>>> WiFi-%SNN2%.xml
