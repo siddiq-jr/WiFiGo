@@ -41,7 +41,51 @@ Usage:
   
     The Quit Option is Self-explanatory. [Q].
 
-                                        Enjoy!
+    Screen Shots :
+
+![Pic-01](First-Screen.jpg)            
+    
+    Options are Start Scanning by Typing "S" 
+    Or Quitting By Typing "Q"
+
+![Pic-02](Second-Screen.jpg)
+
+    Here Just Copy the Network that you whant by highliting it and Ctrl+C and
+    pasteing it by clicking the right mouse butten or Ctrl+V
+
+![Pic-03](Third-Screen.jpg)
+
+    Select from a Built-in Yet Very Week File Of Wordlist by Typing "1"
+    or inport you own wordlist by typing "2"
+    or to quit from this point.
+
+![Pic-04](Fourth-Screen.jpg)
+
+    In the Built-in Wordlist This Screen Will Confirm Wordlist Generation
+    otherwise it will exit and it will be a bug !!.
+
+![Pic-05](9th-Screen.jpg)
+
+    In The custom Wordlist you will have to provide the path to it and if the 
+    path hase spaces in it must be Surrounded by double quotes as shown
+
+![Pic-06](9th-Screen.jpg)
+
+    This Screen Will Confirme the Wordlist validation if correct or not 
+    if not it will tell you that and exit
+
+![Pic-07](Fifth-Screen.jpg)
+
+    Here the attack starter for any of the options (Built-in/Custom) and will
+    show the password its testing dinamicly. 
+
+![Pic-08](seventh-Screen.jpg)
+
+    Here the Script is over and success getting the password, it will offer to save it as a txt file,
+    sorry i've covered the password because its my real password (LOL) "WeekPassword" :)
+
+
+                      That's It you'r good to Go,  Enjoy!
 
 
 Follow Me to Get an Official Release and For the Next Version of This and Other Scripts.
