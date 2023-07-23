@@ -534,6 +534,7 @@
              echo %time% : Correct Password Found. >> %userprofile%\desktop\WifiGo-log.txt
              echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
              echo %time% : Connected to [ %SNN% ] Successfully. >> %userprofile%\desktop\WifiGo-log.txt
+             echo ------------------------------------------------------------------------------ >> %userprofile%\desktop\WifiGo-log.txt
              goto :Success
           ) else (
              netsh wlan disconnect
